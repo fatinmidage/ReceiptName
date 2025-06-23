@@ -170,16 +170,20 @@ cython_debug/
 .env.local
 .env.production
 .env.staging
+.env.development
+.env.test
 
 # 日志文件
 *.log
 logs/
+log/
 
 # 临时文件
 *.tmp
 *.temp
 temp/
 tmp/
+.tmp/
 
 # 系统文件
 .DS_Store
@@ -196,6 +200,9 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
 
 # 操作系统
 .DS_Store
@@ -231,6 +238,19 @@ dist/
 .pytest_cache/
 .coverage
 htmlcov/
+.coverage.*
+.tox/
+.nox/
+
+# 测试图片文件
+test_image.*
+test_image.jpg
+test_image.png
+test_image.jpeg
+test_image.gif
+test_image.bmp
+test_image.tiff
+test_image.webp
 
 # 文档构建
 docs/_build/
@@ -245,6 +265,8 @@ site/
 # ===== 压缩文件 =====
 *.zip
 *.tar.gz
+*.tar.bz2
+*.tar.xz
 *.rar
 *.7z
 
@@ -263,4 +285,57 @@ main.spec
 .venv/
 
 # Python 版本文件（可选，取决于团队策略）
-# .python-version 
+# .python-version
+
+# ===== 图片处理相关 =====
+# 处理后的图片文件
+*_processed.*
+*_renamed.*
+*_output.*
+
+# ===== 缓存文件 =====
+.cache/
+cache/
+*.cache
+
+# ===== 配置文件 =====
+# 本地配置文件
+config.local.py
+settings.local.py
+
+# ===== 数据文件 =====
+# 数据文件（如果有的话）
+data/
+*.csv
+*.json
+*.xml
+*.yaml
+*.yml
+!pyproject.toml
+!uv.lock
+
+# ===== 错误报告 =====
+# 错误报告和崩溃转储
+*.dmp
+*.crash
+error_logs/
+
+# ===== 性能分析 =====
+# 性能分析文件
+*.prof
+*.profile
+*.stats
+
+# ===== 安全相关 =====
+# 证书和密钥文件
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# ===== 网络相关 =====
+# 网络缓存和会话
+.netrc
+.cookies
+*.session 
