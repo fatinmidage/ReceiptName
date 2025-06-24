@@ -7,8 +7,7 @@ import base64
 import logging
 import time
 from pathlib import Path
-from typing import Optional, Dict, Any, List
-from pydantic import BaseModel, Field
+from typing import Dict, Any, List
 
 try:
     from volcenginesdkarkruntime import Ark
@@ -18,22 +17,11 @@ except ImportError:
     raise
 
 from config import config
+from models import ReceiptInfo
 
 # 配置日志
 logging.basicConfig(level=getattr(logging, config.log_level))
 logger = logging.getLogger(__name__)
-
-
-class ReceiptInfo(BaseModel):
-    """交易记录信息结构"""
-    is_receipt: bool = Field(description="是否为交易记录")
-    platform: Optional[str] = Field(description="支付平台（微信支付/支付宝/其他）", default=None)
-    amount: Optional[float] = Field(description="交易金额（元）", default=None)
-    currency: str = Field(description="货币单位", default="元")
-    transaction_time: Optional[str] = Field(description="交易时间", default=None)
-    merchant: Optional[str] = Field(description="商户名称", default=None)
-    confidence: float = Field(description="识别置信度（0-1）")
-    raw_text: str = Field(description="识别的原始文本")
 
 
 class OCRService:

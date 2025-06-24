@@ -215,8 +215,9 @@ ReceiptName/
 ├── main.py                 # 主程序入口
 ├── config.py               # 配置管理
 ├── ocr_service.py          # OCR服务 ✅
+├── models.py               # 数据模型 ✅
+├── receipt_detector.py     # 交易记录检测 ✅
 ├── test_ocr.py             # OCR测试脚本 ✅
-├── receipt_detector.py     # 交易记录检测
 ├── file_renamer.py         # 文件重命名
 ├── pyproject.toml          # 项目配置
 ├── README.md              # 项目文档
