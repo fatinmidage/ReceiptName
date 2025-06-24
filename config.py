@@ -13,7 +13,7 @@ try:
     from dotenv import load_dotenv
 except ImportError:
     # 如果python-dotenv未安装，使用简单的解析方法作为fallback
-    def load_dotenv(dotenv_path=None):
+    def load_dotenv(dotenv_path=None, override=False):
         """简单的.env文件加载函数"""
         env_file = Path(dotenv_path or ".env")
         if env_file.exists():
@@ -22,7 +22,11 @@ except ImportError:
                     line = line.strip()
                     if line and not line.startswith('#') and '=' in line:
                         key, value = line.split('=', 1)
-                        os.environ[key.strip()] = value.strip()
+                        key = key.strip()
+                        value = value.strip()
+                        # 只有当 override=True 或者环境变量不存在时才设置
+                        if override or key not in os.environ:
+                            os.environ[key] = value
 
 
 def get_executable_dir():
@@ -43,20 +47,31 @@ class Config:
     
     def _load_env_file(self):
         """加载 .env 文件（如果存在）
-        优先级：当前工作目录 > 可执行文件目录 > 脚本所在目录
+        优先级：
+        - PyInstaller 打包环境：可执行文件目录 > 当前工作目录 > 脚本所在目录
+        - 开发环境：当前工作目录 > 可执行文件目录 > 脚本所在目录
         """
-        # 可能的 .env 文件位置
-        possible_paths = [
-            Path.cwd() / ".env",  # 当前工作目录
-            get_executable_dir() / ".env",  # 可执行文件目录
-            Path(__file__).parent / ".env",  # 脚本所在目录
-        ]
+        # 判断是否为 PyInstaller 打包环境
+        if getattr(sys, 'frozen', False):
+            # PyInstaller 打包环境：优先使用可执行文件目录
+            possible_paths = [
+                get_executable_dir() / ".env",  # 可执行文件目录（最高优先级）
+                Path.cwd() / ".env",  # 当前工作目录
+                Path(__file__).parent / ".env",  # 脚本所在目录
+            ]
+        else:
+            # 开发环境：优先使用当前工作目录
+            possible_paths = [
+                Path.cwd() / ".env",  # 当前工作目录（最高优先级）
+                get_executable_dir() / ".env",  # 可执行文件目录
+                Path(__file__).parent / ".env",  # 脚本所在目录
+            ]
         
         # 尝试加载第一个存在的 .env 文件
         for env_path in possible_paths:
             if env_path.exists():
                 print(f"📁 加载配置文件：{env_path}")
-                load_dotenv(env_path)
+                load_dotenv(env_path, override=True)  # 强制覆盖已存在的环境变量
                 break
         else:
             print("⚠️  未找到 .env 配置文件，将使用环境变量")

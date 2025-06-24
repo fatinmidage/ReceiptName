@@ -10,9 +10,37 @@ a = Analysis(
         ('env.example', '.'),  # 将示例配置文件打包到可执行文件目录
     ],
     hiddenimports=[
+        # 环境变量和配置相关
         'dotenv',
         'pathlib',
         'typing',
+        # Pydantic相关
+        'pydantic',
+        'pydantic.fields',
+        'pydantic.main',
+        'pydantic.types',
+        # 火山引擎SDK相关
+        'volcenginesdkarkruntime',
+        'volcenginesdkcore',
+        # 图像处理相关
+        'PIL',
+        'PIL.Image',
+        'PIL.ImageFile',
+        'PIL.ImageDraw',
+        'PIL.ImageFont',
+        # 编码相关
+        'base64',
+        'json',
+        # 日志相关
+        'logging',
+        'logging.handlers',
+        # 系统和文件相关
+        'sys',
+        'os',
+        'pathlib',
+        'time',
+        # 类型注解相关
+        'typing_extensions',
     ],
     hookspath=[],
     hooksconfig={},
