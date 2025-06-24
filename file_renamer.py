@@ -7,7 +7,6 @@ import os
 import logging
 from pathlib import Path
 from typing import Optional, Dict, List
-from datetime import datetime
 
 from models import ReceiptInfo
 
@@ -57,13 +56,8 @@ class FileRenamer:
         # 构建基础文件名：金额_支付凭证
         base_name = f"{amount_str}_支付凭证"
         
-        # 如果有平台信息，添加到文件名中
-        if receipt_info.platform:
-            base_name = f"{amount_str}_{receipt_info.platform}_支付凭证"
-        
-        # 添加时间戳以避免重名（使用当前时间）
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        final_name = f"{base_name}_{timestamp}{extension}"
+        # 构建最终文件名
+        final_name = f"{base_name}{extension}"
         
         logger.info(f"生成新文件名: {original_filename} -> {final_name}")
         return final_name
@@ -186,7 +180,6 @@ def test_file_renamer():
         new_name1 = renamer.generate_new_filename(receipt1, "IMG_001.jpg")
         print(f"测试1 - 微信支付文件名: {new_name1}")
         assert "123.45元" in new_name1
-        assert "微信支付" in new_name1
         assert "支付凭证" in new_name1
         assert new_name1.endswith(".jpg")
         
@@ -201,7 +194,7 @@ def test_file_renamer():
         new_name2 = renamer.generate_new_filename(receipt2, "photo.png")
         print(f"测试2 - 支付宝文件名: {new_name2}")
         assert "88.00元" in new_name2
-        assert "支付宝" in new_name2
+        assert "支付凭证" in new_name2
         assert new_name2.endswith(".png")
         
         # 测试用例3: 非交易记录
@@ -225,7 +218,7 @@ def test_file_renamer():
         new_name4 = renamer.generate_new_filename(receipt4, "receipt.jpg")
         print(f"测试4 - 无金额信息文件名: {new_name4}")
         assert "未知金额" in new_name4
-        assert "微信支付" in new_name4
+        assert "支付凭证" in new_name4
         
         print("✅ 所有测试用例通过！")
         

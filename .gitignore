@@ -278,9 +278,6 @@ site/
 !env.example
 
 # ===== 项目特定忽略 =====
-# 自动生成的 spec 文件
-main.spec
-
 # 虚拟环境
 .venv/
 
