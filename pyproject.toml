@@ -7,7 +7,7 @@ name = "receiptname"
 version = "0.1.0"
 description = "智能交易记录识别与重命名工具"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "ReceiptName Team", email = "team@receiptname.com"}
 ]
@@ -15,7 +15,6 @@ keywords = ["ocr", "receipt", "image-processing", "file-rename", "volcengine"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: End Users/Desktop",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.13",
@@ -46,17 +45,7 @@ Documentation = "https://github.com/your-username/receiptname#readme"
 "Bug Tracker" = "https://github.com/your-username/receiptname/issues"
 
 [tool.setuptools]
-py-modules = [
-    "main",
-    "models", 
-    "ocr_service",
-    "receipt_detector",
-    "file_renamer",
-    "config"
-]
-
-[tool.setuptools.package-data]
-"*" = ["README.md", "env.example"]
+py-modules = ["main", "models", "ocr_service", "receipt_detector", "file_renamer", "config"]
 
 [tool.black]
 line-length = 88
