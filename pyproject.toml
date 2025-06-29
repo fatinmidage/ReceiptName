@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "receiptname"
@@ -45,16 +45,18 @@ Repository = "https://github.com/your-username/receiptname"
 Documentation = "https://github.com/your-username/receiptname#readme"
 "Bug Tracker" = "https://github.com/your-username/receiptname/issues"
 
-[tool.hatch.build.targets.wheel]
+[tool.setuptools]
 py-modules = [
     "main",
     "models", 
     "ocr_service",
     "receipt_detector",
     "file_renamer",
-    "config",
-    "test_ocr"
+    "config"
 ]
+
+[tool.setuptools.package-data]
+"*" = ["README.md", "env.example"]
 
 [tool.black]
 line-length = 88
