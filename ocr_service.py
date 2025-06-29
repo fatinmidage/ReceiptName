@@ -10,10 +10,10 @@ from pathlib import Path
 from typing import Dict, Any, List
 
 try:
-    from volcenginesdkarkruntime import Ark
+    from openai import OpenAI
 except ImportError:
-    print("❌ 错误：未安装火山引擎方舟SDK")
-    print("   请运行：pip install volcengine-python-sdk[ark]")
+    print("❌ 错误：未安装OpenAI SDK")
+    print("   请运行：pip install openai")
     raise
 
 from config import config
@@ -29,7 +29,10 @@ class OCRService:
     
     def __init__(self):
         """初始化OCR服务"""
-        self.client = Ark(api_key=config.ark_api_key)
+        self.client = OpenAI(
+            api_key=config.ark_api_key,
+            base_url="https://ark.cn-beijing.volces.com/api/v3"
+        )
         self.model_id = config.ark_model_id
         self.max_retries = config.max_retries
         self.retry_delay = config.retry_delay
@@ -77,17 +80,26 @@ class OCRService:
         
         # 构建提示词
         prompt = """
-请分析这张图片，判断是否为交易记录（如微信支付、支付宝等），并提取相关信息。
+请分析这张图片，并执行以下任务：
 
-如果是交易记录，请提取以下信息：
-- 支付平台（微信支付/支付宝/其他）
-- 交易金额
-- 交易时间
-- 商户名称
+1. 首先判断图片类型：
+   - 这是手机截图（屏幕截图）还是用相机拍摄的照片？
+   - 判断依据：截图通常边缘整齐、像素完美、无物理环境背景；拍照通常有透视变形、光线反射、可能有周围环境
 
-如果不是交易记录，请将is_receipt设为false，其他字段设为null。
+2. 判断是否为交易记录：
+   - 只有手机截图才可能是有效的支付凭证
+   - 如果是拍照的图片，即使包含交易信息，也将is_receipt设为false
+   - 如果是截图且包含交易信息（微信支付、支付宝等），则为有效交易记录
 
-请仔细分析图片中的所有文字内容，确保信息准确。
+3. 如果是有效的交易记录截图，请提取以下信息：
+   - 支付平台（微信支付/支付宝/其他）
+   - 交易金额
+   - 交易时间
+   - 商户名称
+
+4. 如果不是交易记录或是拍照的图片，请将is_receipt设为false，其他字段设为null。
+
+请仔细分析图片特征，确保准确识别截图与拍照的区别。
 """
         
         # 重试机制
@@ -178,7 +190,7 @@ def test_ocr_service():
         print("✅ OCR服务初始化成功")
         
         # 测试图片路径（需要实际存在的图片）
-        test_image = Path("/Users/wuyingheng/项目/ReceiptName/IMG_F56683927094-1.jpeg")
+        test_image = Path("/Users/wuyingheng/项目/ReceiptName/IMG_3599.JPG")
         if test_image.exists():
             result = ocr.recognize_receipt(test_image)
             print(f"测试结果: {result.model_dump_json(indent=2)}")
