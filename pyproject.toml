@@ -46,7 +46,15 @@ Documentation = "https://github.com/your-username/receiptname#readme"
 "Bug Tracker" = "https://github.com/your-username/receiptname/issues"
 
 [tool.hatch.build.targets.wheel]
-packages = ["."]
+py-modules = [
+    "main",
+    "models", 
+    "ocr_service",
+    "receipt_detector",
+    "file_renamer",
+    "config",
+    "test_ocr"
+]
 
 [tool.black]
 line-length = 88
@@ -101,7 +109,14 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = ["."]
+source = [
+    "main",
+    "models", 
+    "ocr_service",
+    "receipt_detector",
+    "file_renamer",
+    "config"
+]
 omit = [
     "*/tests/*",
     "*/test_*",
