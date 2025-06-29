@@ -204,6 +204,10 @@ Thumbs.db
 .vscode/launch.json
 .vscode/tasks.json
 
+# Cursor AI 编辑器
+.cursor/
+*.cursor-settings
+
 # 操作系统
 .DS_Store
 .DS_Store?
@@ -252,6 +256,18 @@ test_image.bmp
 test_image.tiff
 test_image.webp
 
+# 示例和测试图片文件（常见命名格式）
+IMG_*.jpg
+IMG_*.JPG
+IMG_*.png
+IMG_*.PNG
+IMG_*.jpeg
+IMG_*.JPEG
+sample_*.jpg
+sample_*.png
+example_*.jpg
+example_*.png
+
 # 文档构建
 docs/_build/
 site/
@@ -277,9 +293,24 @@ site/
 *key*
 !env.example
 
+# 运行时生成的文件
+*.pid
+*.seed
+*.pid.lock
+
+# 开发和调试文件
+.repl_history
+debug.log
+debug_*.log
+
 # ===== 项目特定忽略 =====
 # 虚拟环境
 .venv/
+
+# 开发文档和计划文件（经常变动的工作文档）
+开发计划.md
+示例代码/大模型快速入门.md
+示例代码/大模型结构化输出.md
 
 # Python 版本文件（可选，取决于团队策略）
 # .python-version
